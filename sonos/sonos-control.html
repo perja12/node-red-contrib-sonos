@@ -11,11 +11,11 @@
 			mode: {value:""},
 			track: {value:""},
 			volume: {value:""},
-			volume_value: {value:""} // TODO: check if value between 0..100
+			volume_value: {value:""}     // TODO: check if value between 0..100
         },
-        inputs:1,               // set the number of inputs - only 0 or 1
-        outputs:0,              // set the number of outputs - 0 to n
-        icon: "bridge.png",     // saved in  icons/myicon.png
+        inputs:1,                       // set the number of inputs - only 0 or 1
+        outputs:0,                      // set the number of outputs - 0 to n
+        icon: "better_sonos.png",       // saved in  icons/myicon.png
         color: "#E2D96E", 
         label: function() {
             return this.name || "Control Sonos";
@@ -36,7 +36,7 @@
 <!-- Setting design and inputs for node -->
 <script type="text/x-red" data-template-name="sonos-control">
      <div class="form-row">
-        <label for="node-input-playnode"> SONOS Play Node</label>
+        <label for="node-input-playnode"> Sonos Config Node</label>
         <input type="text" id="node-input-playnode">
     </div>
 	
@@ -89,7 +89,7 @@
 	
 	<div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="SONOS Play Node Name">
+        <input type="text" id="node-input-name" placeholder="Sonos Config Node Name">
     </div>
 </script>
 

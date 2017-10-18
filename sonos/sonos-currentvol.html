@@ -11,10 +11,10 @@
         },
         inputs:1,               // set the number of inputs - only 0 or 1
         outputs:1,              // set the number of outputs - 0 to n
-        icon: "bridge.png",     // saved in  icons/myicon.png
+        icon: "better_sonos.png",       // saved in  icons/myicon.png
         color: "#E2D96E", 
         label: function() {
-            return this.name || "Sonos current track";
+            return this.name || "Sonos current volume";
         },
         paletteLabel: "Current Volume"
         
@@ -24,18 +24,34 @@
 <!-- Setting design and inputs for node -->
 <script type="text/x-red" data-template-name="sonos-currentvol">
 	<div class="form-row">
-        <label for="node-input-playnode"> SONOS Play Node</label>
+        <label for="node-input-playnode"> Sonos Config Node</label>
         <input type="text" id="node-input-playnode">
     </div>
 
 	<div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="SONOS Play Node Name">
+        <input type="text" id="node-input-name" placeholder="Sonos Config Node Name">
     </div>	
 </script>
 
-
 <!-- Simple Help Text -->
 <script type="text/x-red" data-help-name="sonos-currentvol">
-	<p>A node to retrieve current volume upon trigger</p>
+	<p>
+        A node to retrieve current volume upon triggered
+    </p>
+    <h3>Outputs</h3>
+    
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">int | 0-100</span>
+        </dt>
+        <dd> current volume value
+             <br/>
+             When muted, the volume value is not affected. In other words, volume value is not zero when speaker is muted.
+        </dd>
+        <dt>normalized <span class="property-type">float | 0-1</span></dt>
+        <dd> normalized current volume value
+             <br/>value ranges from 0.0 to 1.0. Similar to above <strong><i>bri</i></strong> parameter, except this has been normalized to [0.0 - 1.0] range.
+        </dd>
+    </dl>
 </script>
