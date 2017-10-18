@@ -1,7 +1,10 @@
 # node-red-contrib-better-sonos
 
-A set of nodes to control SONOS via NodeRED. Uses the sonos [NPM Module](https://github.com/bencevans/node-sonos).
-Originated from the **node-red-contrib-sonos** [NPM Module](https://github.com/shbert/node-red-contrib-sonos) since the author seems to have stopped working on it.
+A set of nodes to control SONOS via NodeRED. 
+
+Uses the [**sonos Module**](https://github.com/bencevans/node-sonos).
+
+Forked, renamed & improved from the [**node-red-contrib-sonos**](https://github.com/shbert/node-red-contrib-sonos) since the author seems to have stopped working on it.
 
 Open points / not tested yet:
  * manipulating playlists
@@ -23,6 +26,8 @@ Available modes:
 * `"volume":1..100,mute,unmute`
 
 Current Track - returns the currently played track
+
+Current Volume - returns the current volume
 
 Queue - controls one SONOS player, by reacting on a JSON payload.
 Available modes:
