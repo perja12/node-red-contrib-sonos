@@ -1,33 +1,41 @@
 {
-	"name"        : "node-red-contrib-sonos",
-	"version"     : "0.0.7",
-	"description" : "Controlling SONOS Player",
-	"main"        : "index.js",
-	"author"      : "Robert Henjes <smarthome@rhenjes.de>",
-	"license"     : "MIT",
+	"name": "node-red-contrib-better-sonos",
+	"version": "0.0.1",
+	"description": "A newer & better node for controlling SONOS Speakers",
+	"main": "index.js",
+	"author": "Originally US <hello@originally.us>",
+	"license": "MIT",
 	"contributors": [
-	{
-		"name" : "Robert Henjes",
-		"email": "smarthome@rhenjes.de"
-	}
+		{
+			"name": "Robert Henjes",
+			"email": "smarthome@rhenjes.de"
+		},
+		{
+			"name": "Torin Nguyen",
+			"email": "torinnguyen@gmail.com"
+		}
 	],
-	"keywords": [ "node-red","sonos","music"],
+	"keywords": [
+		"node-red",
+		"sonos",
+		"music"
+	],
 	"node-red": {
 		"nodes": {
-			"sonos-config"      : "sonos/sonos-config.js",
-			"sonos-control"     : "sonos/sonos-control.js",
+			"sonos-config": "sonos/sonos-config.js",
+			"sonos-control": "sonos/sonos-control.js",
 			"sonos-currenttrack": "sonos/sonos-currenttrack.js",
-			"sonos-queue"       : "sonos/sonos-queue.js"
+			"sonos-queue": "sonos/sonos-queue.js"
 		}
 	},
 	"repository": {
 		"type": "git",
-		"url" : "https://github.com/shbert/node-red-contrib-sonos"
+		"url": "https://github.com/originallyus/node-red-contrib-sonos"
 	},
 	"bugs": {
-		"url": "https://github.com/shbert/node-red-contrib-sonos/issues"
+		"url": "https://github.com/originallyus/node-red-contrib-sonos/issues"
 	},
-	"homepage": "http://flows.nodered.org/node/node-red-contrib-sonos",
+	"homepage": "http://flows.nodered.org/node/node-red-contrib-better-sonos",
 	"dependencies": {
 		"jsbn": "^0.0.0",
 		"sonos": "0.14.1"
