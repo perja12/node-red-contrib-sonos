@@ -30,8 +30,7 @@
       "sonos-control": "sonos/sonos-control.js",
       "sonos-currenttrack": "sonos/sonos-currenttrack.js",
       "sonos-currentvol": "sonos/sonos-currentvol.js",
-      "sonos-queue": "sonos/sonos-queue.js",
-      "sonos-query": "sonos/sonos-query.js"
+      "sonos-queue": "sonos/sonos-queue.js"
     }
   },
   "repository": {
