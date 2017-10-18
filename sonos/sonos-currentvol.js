@@ -23,8 +23,6 @@ module.exports = function(RED) {
 
         node.status({});
         node.on('input', function (msg) {            
-            var payload = typeof msg.payload === 'object' ? msg.payload : {};
-
             if (node.client === null || node.client === undefined) {
             	node.status({fill:"red", shape:"dot", text:"node.client is null"});
             	return;

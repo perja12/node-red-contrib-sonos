@@ -30,12 +30,31 @@
 
 	<div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Sonos Config Node Name">
+        <input type="text" id="node-input-name" placeholder="Name">
     </div>	
 </script>
 
 
 <!-- Simple Help Text -->
 <script type="text/x-red" data-help-name="sonos-currenttrack">
-	<p>A node to retrieve current track upon trigger</p>
+    <p>
+        A node to retrieve current track upon triggered
+    </p>
+    <h3>Outputs</h3>
+    
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd> current track's title
+        </dd>
+        <dt>track 
+            <span class="property-type">object</span></dt>
+        <dd> full track info object
+        </dd>
+        <dt>track.albumArtURL
+            <span class="property-type">string/url</span></dt>
+        <dd> full url for the album art
+        </dd>
+    </dl>
 </script>
