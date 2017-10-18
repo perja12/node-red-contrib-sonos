@@ -75,17 +75,17 @@ module.exports = function(RED) {
 		{
 			case "pause":
 				client.pause(function(err, result) {
-					handleSonosApiRequest(err, result, msg, "paused", null);
+					handleSonosApiRequest(node, err, result, msg, "paused", null);
 				});
 				break;
 			case "stop":
 				client.stop(function(err, result) {
-					handleSonosApiRequest(err, result, msg, "stopped", null);
+					handleSonosApiRequest(node, err, result, msg, "stopped", null);
 				});
 				break;
 			default:
 				client.play(function(err, result) {
-					handleSonosApiRequest(err, result, msg, "playing", null);
+					handleSonosApiRequest(node, err, result, msg, "playing", null);
 				});
 				break;
 		}
@@ -96,7 +96,6 @@ module.exports = function(RED) {
     	var _volfkt;
 		var _volume;
 		if (payload.volume) {
-			node.log("Node setting overwritten by input: " + payload.volume);
 			if (payload.volume === "vol_up") {
 			 _volfkt = "vol_up";
 			 _volume = payload.volstep;
@@ -117,7 +116,6 @@ module.exports = function(RED) {
 			}
 		
 		} else if (node.volume === "volume") {
-			node.log("Node setting overwritten by input: " + node.volume_value);
 			_volfkt = "vol_set";
 			_volume = node.volume_value;
 		} else if (node.volume === "vol_up") {
@@ -144,18 +142,18 @@ module.exports = function(RED) {
 					break;
 				}
 				client.setVolume(String(_volume), function(err, result) {
-					handleSonosApiRequest(err, result, msg, "vol: " + String(_volume), null);
+					handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
 				});
 				break;
 
 			case "mute":
 				client.setMuted(true, function(err, result) {
-					handleSonosApiRequest(err, result, msg, "muted", null);
+					handleSonosApiRequest(node, err, result, msg, "muted", null);
 				});
 				break;
 			case "unmute":
 				client.setMuted(false, function(err, result) {
-					handleSonosApiRequest(err, result, msg, "unmuted", null);
+					handleSonosApiRequest(node, err, result, msg, "unmuted", null);
 				});
 				break;
 			case "vol_up":
@@ -171,7 +169,7 @@ module.exports = function(RED) {
 				 	var volume_val = parseInt(currentvol) + volume_step;
 				 	volume_val = Math.min(100, volume_val);
 				 	volume_val = Math.max(0, volume_val);
-				 	handleSonosApiRequest(err, result, msg, "vol: " + String(_volume), null);
+				 	handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
 				});
 				break;
 			case "vol_down":
@@ -187,7 +185,7 @@ module.exports = function(RED) {
 				 	var volume_val = parseInt(currentvol) - volume_step;
 				 	volume_val = Math.min(100, volume_val);
 				 	volume_val = Math.max(0, volume_val);
-				 	handleSonosApiRequest(err, result, msg, "vol: " + String(_volume), null);
+				 	handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
 				});
 				break;
 		}
@@ -201,20 +199,20 @@ module.exports = function(RED) {
 
 		if (_track == "next") {
 			client.next(function(err, result) {
-				handleSonosApiRequest(err, result, msg, "next", null);
+				handleSonosApiRequest(node, err, result, msg, "next", null);
 			});
 			return;
 		}
 
 		if (_track == "previous") {
 			client.previous(function(err, result) {
-				handleSonosApiRequest(err, result, msg, "previous", null);
+				handleSonosApiRequest(node, err, result, msg, "previous", null);
 			});
 			return;
 		}
     }
 
-    function handleSonosApiRequest(err, result, msg, successString, failureString) {
+    function handleSonosApiRequest(node, err, result, msg, successString, failureString) {
     	if (err) {
 			node.error(JSON.stringify(err));
 			if (!failureString)

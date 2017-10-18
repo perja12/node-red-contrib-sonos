@@ -40,9 +40,11 @@ module.exports = function(RED) {
 				}
 
 				//inject additional properties
-				var port = playnode.port ? playnode.port : 1400;
-				trackObj.albumArtURL = "http://" + playnode.ipaddress + ":" + port + trackObj.albumArtURI;
-
+				if (trackObj.albumArtURI !== undefined && trackObj.albumArtURI !== null) {
+					var port = playnode.port ? playnode.port : 1400;
+					trackObj.albumArtURL = "http://" + playnode.ipaddress + ":" + port + trackObj.albumArtURI;
+				}
+				
 				msg.payload = trackObj.title;
 				msg.track = trackObj;
 				node.send(msg);
