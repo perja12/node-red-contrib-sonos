@@ -2,6 +2,10 @@
 
 An improved set of NodeRed nodes to control Sonos speakers.
 
+![Usage screenshot](https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot.png "Screenshot")
+
+![Usage screenshot](https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot_config.png "Screenshot")
+
 Uses this [**sonos Module**](https://github.com/bencevans/node-sonos).
 
 Forked, renamed & remastered from the original [**node-red-contrib-sonos**](https://github.com/shbert/node-red-contrib-sonos) since the author seems to have stopped working on it.
@@ -37,7 +41,7 @@ Check out [RMPlugin app](https://play.google.com/store/apps/details?id=us.origin
 
 
 ## Other nodes developed by us
-  * [Dead-simple Alexa integration](https://github.com/shbert/node-red-contrib-alexa-local)
+  * [Dead-simple Alexa integration](https://github.com/shbert/node-red-contrib-better-sonos)
   * [H801 RGBW Controller](https://github.com/shbert/node-red-contrib-h801)
 
 
