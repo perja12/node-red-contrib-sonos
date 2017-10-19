@@ -34,10 +34,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/originallyus/node-red-contrib-sonos"
+    "url": "https://github.com/originallyus/node-red-contrib-better-sonos"
   },
   "bugs": {
-    "url": "https://github.com/originallyus/node-red-contrib-sonos/issues"
+    "url": "https://github.com/originallyus/node-red-contrib-better-sonos/issues"
   },
   "homepage": "http://flows.nodered.org/node/node-red-contrib-better-sonos",
   "dependencies": {
