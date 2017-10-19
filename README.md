@@ -2,13 +2,11 @@
 
 An improved set of NodeRed nodes to control Sonos speakers.
 
-![Usage screenshot](https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot.png "Screenshot")
+![Usage screenshot](https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot.png "Nodes")
 
-![Usage screenshot](https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot_config.png "Screenshot")
+![Usage screenshot](https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot_config.png "Config node with autocompletion")
 
-Uses this [**sonos Module**](https://github.com/bencevans/node-sonos).
-
-Forked, renamed & remastered from the original [**node-red-contrib-sonos**](https://github.com/shbert/node-red-contrib-sonos) since the author seems to have stopped working on it.
+This was forked & remastered from the original **node-red-contrib-sonos** since the author have stopped working on it.
 
 
 ## Installation
@@ -24,14 +22,14 @@ Change your working directory to your node red installation. Usually it's in ~/.
 
 ## FAQ
 **How is this different from node-red-contrib-sonos?**
-Our set of Sonos nodes are much easier to use. 
+
+Our set of Sonos nodes are less error-prone and much easier to work with
  *  config-node comes with a simple selection rather than entering IP Address manually
  *  Sonos devices are identified by their serial number, not dynamic IP address
  *  1 single node to report all current status of device
  *  Better documentation
  *  It is maintained by a team of experienced developers & hackers
  *  More convenient nodes are in development
-
 
 **I have some suggestions, how do I get in touch?**
 Please create an issue in [Github](https://github.com/originallyus/node-red-contrib-better-sonos/issues)
@@ -40,9 +38,10 @@ Please create an issue in [Github](https://github.com/originallyus/node-red-cont
 Check out [RMPlugin app](https://play.google.com/store/apps/details?id=us.originally.tasker&hl=en) developed by us. Here's an [intro video](https://www.youtube.com/watch?v=QUKYKhK57sc) for the hardware.
 
 
-## Other nodes developed by us
+## Other awesome nodes developed by us
   * [Dead-simple Alexa integration](https://github.com/originallyus/node-red-contrib-better-sonos)
   * [H801 RGBW Controller](https://github.com/originallyus/node-red-contrib-h801)
+  * RMPlugin nodes...WIP
 
 
 ## TODO
