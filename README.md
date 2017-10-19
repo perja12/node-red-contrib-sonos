@@ -41,8 +41,8 @@ Check out [RMPlugin app](https://play.google.com/store/apps/details?id=us.origin
 
 
 ## Other nodes developed by us
-  * [Dead-simple Alexa integration](https://github.com/shbert/node-red-contrib-better-sonos)
-  * [H801 RGBW Controller](https://github.com/shbert/node-red-contrib-h801)
+  * [Dead-simple Alexa integration](https://github.com/originallyus/node-red-contrib-better-sonos)
+  * [H801 RGBW Controller](https://github.com/originallyus/node-red-contrib-h801)
 
 
 ## TODO
