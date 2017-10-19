@@ -3,10 +3,10 @@
 
 <!-- Registering Node -->
 <script type="text/javascript">
-	RED.nodes.registerType('sonos-queue',{
+	RED.nodes.registerType('better-sonos-queue',{
         category: 'Sonos',
         defaults: {    
-            confignode: {value:"", type:"sonos-config"},
+            confignode: {value:"", type:"better-sonos-config"},
 			songuri: {value:""},
 			position: {value:""},
 			positioninqueue: {value:""},
@@ -15,7 +15,7 @@
         inputs:1,               // set the number of inputs - only 0 or 1
         outputs:1,              // set the number of outputs - 0 to n
         icon: "better_sonos.png",       // saved in  icons/myicon.png
-        color: "#E2D96E", 
+        color: "#FFFFFF", 
         label: function() {
             return this.name || "Sonos queue song";
         },

@@ -26,11 +26,10 @@
   ],
   "node-red": {
     "nodes": {
-      "sonos-config": "sonos/sonos-config.js",
-      "sonos-control": "sonos/sonos-control.js",
-      "sonos-currenttrack": "sonos/sonos-currenttrack.js",
-      "sonos-currentvol": "sonos/sonos-currentvol.js",
-      "sonos-queue": "sonos/sonos-queue.js"
+      "better-sonos-config": "sonos/sonos-config.js",
+      "better-sonos-control": "sonos/sonos-control.js",
+      "better-sonos-status": "sonos/sonos-status.js",
+      "better-sonos-queue": "sonos/sonos-queue.js"
     }
   },
   "repository": {

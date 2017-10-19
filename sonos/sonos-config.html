@@ -1,10 +1,9 @@
 <script type="text/javascript">
-    RED.nodes.registerType('sonos-config',{
+    RED.nodes.registerType('better-sonos-config',{
         category: 'config',
         defaults: {
             name: {value: ""},
-            serialnum: {value: "", required:true},
-            port: {value: 1400}
+            serialnum: {value: "", required:true}
         },
         label: function() {
             return this.name;
@@ -44,7 +43,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="sonos-config">
+<script type="text/x-red" data-template-name="better-sonos-config">
     <div class="form-row">
         <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-config-input-name" placeholder="Name">
@@ -54,9 +53,4 @@
         <input type="text" id="node-config-input-serialnum" style="width:60%;" placeholder="B8-E9-37-83-10-26:2">
         <a id="node-config-lookup-serialnum" class="btn"><i id="node-config-lookup-serialnum-icon" class="fa fa-search"></i></a>
     </div>
-    <div class="form-row">
-		<label for="node-config-input-port" style="margin-left: 10px; width: 35px; "> Port</label>
-        <input type="text" id="node-config-input-port" style="width:45px" placeholder="1400">
-    </div>
-    
 </script>

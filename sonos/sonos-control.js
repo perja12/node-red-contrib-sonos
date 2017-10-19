@@ -41,8 +41,12 @@ module.exports = function(RED) {
 			//first find the Sonos IP address from given serial number
 			findSonos(node, configNode.serialnum, function(err, device) {
 				if (err) {
-					node.status({fill:"red", shape:"dot", text:"device " + configNode.serialnum + " not found"});
+					node.status({fill:"red", shape:"dot", text:"error looking for device " + configNode.serialnum});
 					return;
+				}
+				if (device === null) {
+					node.status({fill:"red", shape:"dot", text:"device " + configNode.serialnum + " not found"});
+					return;	
 				}
 				handleInputMsg(node, configNode, msg, device.ipaddress);
 			});
@@ -250,32 +254,49 @@ module.exports = function(RED) {
 
 	function findSonos(node, serialNumber, callback) 
 	{
+		var foundMatch = false;
         var sonos = require("sonos");
         var search = sonos.search(function(device) {
             device.deviceDescription(function(err, info) {
                 if (err) {
+                	node.error(JSON.stringify(err));
                 	callback(err, null)
                    	return;
                 }
 
                 //Inject additional property
-                var deviceIp = info.friendlyName.split("-")[0].trim();
-                device.ipaddress = deviceIp;
+                if (info.friendlyName !== undefined && info.friendlyName !== null)
+                	info.ipaddress = info.friendlyName.split("-")[0].trim();
+                if (device.host)
+                	info.ipaddress = device.host;
 
-                var isMatch = false;
-            	if (device.serialNum !== undefined && device.serialNum !== null) 
-            		if (device.serialNum.trim().toUpperCase() == serialNumber.trim().toUpperCase())
-            			isMatch = true;
+				//We use 2 different ways to obtain serialnum Sonos API
+            	if (info.serialNum !== undefined && info.serialNum !== null)
+            		if (info.serialNum.trim().toUpperCase() == serialNumber.trim().toUpperCase())
+            			foundMatch = true;
+            	if (device.serialNumber !== undefined && device.serialNumber !== null)
+            		if (device.serialNumber.trim().toUpperCase() == serialNumber.trim().toUpperCase())
+            			foundMatch = true;
 
-                if (isMatch && callback)
-                	callback(null, device);
+                if (foundMatch && callback)
+                	callback(null, info);
 
-                if (isMatch)
+                if (foundMatch) {
                 	search.destroy();
+                	search = null;
+                }
             });
         });
         search.setMaxListeners(Infinity);
+
+        //In case there is no match
+        setTimeout(function() { 
+            if (!foundMatch && callback)
+                callback(null, null);
+            if (search !== null)
+           		search.destroy();
+        }, 3000);
 	}
 
-    RED.nodes.registerType('sonos-control', Node);
+    RED.nodes.registerType('better-sonos-control', Node);
 };

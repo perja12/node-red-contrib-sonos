@@ -4,7 +4,6 @@ module.exports = function(RED)
         RED.nodes.createNode(this, config);
 
         this.serialnum = config.serialnum;
-        this.port      = config.port;
     }
 
     //Build API to auto detect IP Addresses
@@ -47,5 +46,5 @@ module.exports = function(RED)
         }
     }
 
-    RED.nodes.registerType("sonos-config", SonosPlayerNode);
+    RED.nodes.registerType("better-sonos-config", SonosPlayerNode);
 };
