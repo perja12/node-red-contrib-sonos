@@ -70,8 +70,8 @@ module.exports = function(RED) {
 
 			//inject additional properties
 			if (trackObj.albumArtURI !== undefined && trackObj.albumArtURI !== null) {
-				var port = configNode.port ? configNode.port : 1400;
-				trackObj.albumArtURL = "http://" + configNode.serialnum + ":" + port + trackObj.albumArtURI;
+				var port = 1400;
+				trackObj.albumArtURL = "http://" + ipaddress + ":" + port + trackObj.albumArtURI;
 			}
 			
 			//output 2

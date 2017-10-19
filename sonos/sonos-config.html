@@ -2,7 +2,7 @@
     RED.nodes.registerType('better-sonos-config',{
         category: 'config',
         defaults: {
-            name: {value: ""},
+            name: {value: "", required:true},
             serialnum: {value: "", required:true}
         },
         label: function() {
