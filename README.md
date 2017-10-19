@@ -1,10 +1,10 @@
 # node-red-contrib-better-sonos
 
-A set of nodes to control SONOS via NodeRED. 
+An improved set of NodeRed nodes to control Sonos speakers.
 
-Uses the [**sonos Module**](https://github.com/bencevans/node-sonos).
+Uses this [**sonos Module**](https://github.com/bencevans/node-sonos).
 
-Forked, renamed & improved from the [**node-red-contrib-sonos**](https://github.com/shbert/node-red-contrib-sonos) since the author seems to have stopped working on it.
+Forked, renamed & remastered from the original [**node-red-contrib-sonos**](https://github.com/shbert/node-red-contrib-sonos) since the author seems to have stopped working on it.
 
 
 ## Installation
@@ -21,11 +21,13 @@ Change your working directory to your node red installation. Usually it's in ~/.
 ## FAQ
 **How is this different from node-red-contrib-sonos?**
 Our set of Sonos nodes are much easier to use. 
- *  To start with, config-node comes with a simple selection rather than entering IP Address manually
- *  Sonos devices are identified by their serial number, not IP address. So you do not have to set static/reserved IP addresses for them.
- *  1 single node to report current status of device
+ *  config-node comes with a simple selection rather than entering IP Address manually
+ *  Sonos devices are identified by their serial number, not dynamic IP address
+ *  1 single node to report all current status of device
+ *  Better documentation
  *  It is maintained by a team of experienced developers & hackers
  *  More convenient nodes are in development
+
 
 **I have some suggestions, how do I get in touch?**
 Please create an issue in [Github](https://github.com/originallyus/node-red-contrib-better-sonos/issues)
