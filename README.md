@@ -45,8 +45,9 @@ Check out [RMPlugin app](https://play.google.com/store/apps/details?id=us.origin
 
 
 ## TODO
-  * Getting playing/paused status in sonos-status node
   * Getting playlist
+  * Getting current queue
+  * Search Sonos Music library
   * Text-to-speech
 
 
