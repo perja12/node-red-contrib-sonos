@@ -1,25 +1,22 @@
 module.exports = function(RED) {
-    'use strict';
+	'use strict';
 
-    function Node(n) {
-      
-        RED.nodes.createNode(this, n);
+	function Node(n) {
+	  
+		RED.nodes.createNode(this, n);
 		var node = this;
-		
-		var configNode = RED.nodes.getNode(n.confignode); 
-		if (configNode === undefined || configNode === null) {
-        	node.status({fill:"red", shape:"ring", text:"please select a config node"});
-        	return;
-        }
-        if (configNode.serialnum === undefined || configNode === null) {
-        	node.status({fill:"red", shape:"ring", text:"missing serial number in config node"});
-        	return;
-        }
+		var configNode = RED.nodes.getNode(n.confignode);
 
-        //clear node status
-        node.status({});
+		var SonosHelper = require('./SonosHelper.js');
+		var helper = new SonosHelper();
+		var isValid = helper.validateConfigNode(node, configNode);
+		if (!isValid)
+			return;
 
-        //Hmmm?
+		//clear node status
+		node.status({});
+
+		//Hmmm?
 		node.mode = n.mode;
 		node.track = n.track;
 		node.volume = n.volume;
@@ -27,46 +24,28 @@ module.exports = function(RED) {
 			node.volume = "";
 		node.volume_value = n.volume_value;
 		
-        //handle input message
-        node.on('input', function (msg) {
-        	if (configNode === undefined || configNode === null) {
-	        	node.status({fill:"red", shape:"ring", text:"please select a config node"});
-	        	return;
-	        }
-	        if (configNode.serialnum === undefined || configNode === null) {
-	        	node.status({fill:"red", shape:"ring", text:"missing serial number in config node"});
-	        	return;
-	        }
-
-			//first find the Sonos IP address from given serial number
-			findSonos(node, configNode.serialnum, function(err, device) {
-				if (err) {
-					node.status({fill:"red", shape:"dot", text:"error looking for device " + configNode.serialnum});
-					return;
-				}
-				if (device === null) {
-					node.status({fill:"red", shape:"dot", text:"device " + configNode.serialnum + " not found"});
-					return;	
-				}
+		//handle input message
+		node.on('input', function (msg) {
+			helper.preprocessInputMsg(node, configNode, msg, function(device) {
 				handleInputMsg(node, configNode, msg, device.ipaddress);
 			});
-        });
-    }
+		});
+	}
 
-    //------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------
 
-    function handleInputMsg(node, configNode, msg, ipaddress)
-    {
+	function handleInputMsg(node, configNode, msg, ipaddress)
+	{
 		var sonos = require('sonos');
 		var client = new sonos.Sonos(ipaddress);
 		if (client === null || client === undefined) {
-        	node.status({fill:"red", shape:"dot", text:"sonos client is null"});
-        	return;
-        }
+			node.status({fill:"red", shape:"dot", text:"sonos client is null"});
+			return;
+		}
 
-        var payload = typeof msg.payload === 'object' ? msg.payload : {};
+		var payload = typeof msg.payload === 'object' ? msg.payload : {};
 
-    	if (payload.mode || node.mode)
+		if (payload.mode || node.mode)
 			setMode(node, configNode, msg, client, payload);
 
 		// evaluate requested track setting
@@ -79,14 +58,14 @@ module.exports = function(RED) {
 			setVolume(node, configNode, msg, client, payload);
 
 		node.send(msg);
-    }
+	}
 
-    //------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------
 
-    // (TBD: discuss if automatic play with track and volume 
+	// (TBD: discuss if automatic play with track and volume 
 	// settings, maybe depending on a node setting "enforce automatic play")
-    function setMode(node, configNode, msg, client, payload)
-    {
+	function setMode(node, configNode, msg, client, payload)
+	{
 		var _mode = node.mode;
 		if (payload.mode) {
 			node.log("Node setting overwritten by input: " + payload.mode);
@@ -111,11 +90,11 @@ module.exports = function(RED) {
 				});
 				break;
 		}
-    }
+	}
 
-    function setVolume(node, configNode, msg, client, payload)
-    {
-    	var _volfkt;
+	function setVolume(node, configNode, msg, client, payload)
+	{
+		var _volfkt;
 		var _volume;
 		if (payload.volume) {
 			if (payload.volume === "vol_up") {
@@ -211,11 +190,11 @@ module.exports = function(RED) {
 				});
 				break;
 		}
-    }
+	}
 
-    function setTrack(node, configNode, msg, client, payload)
-    {
-    	var _track = node.track;
+	function setTrack(node, configNode, msg, client, payload)
+	{
+		var _track = node.track;
 		if (payload.track)
 			_track = payload.track;
 
@@ -232,10 +211,10 @@ module.exports = function(RED) {
 			});
 			return;
 		}
-    }
+	}
 
-    function handleSonosApiRequest(node, err, result, msg, successString, failureString) {
-    	if (err) {
+	function handleSonosApiRequest(node, err, result, msg, successString, failureString) {
+		if (err) {
 			node.error(JSON.stringify(err));
 			if (!failureString)
 				failureString = "failed to execute request";
@@ -248,55 +227,7 @@ module.exports = function(RED) {
 		if (!successString)
 			successString = "request success";
 		node.status({fill:"blue", shape:"dot", text:successString});
-    }
-
-    //------------------------------------------------------------------------------------------
-
-	function findSonos(node, serialNumber, callback) 
-	{
-		var foundMatch = false;
-        var sonos = require("sonos");
-        var search = sonos.search(function(device) {
-            device.deviceDescription(function(err, info) {
-                if (err) {
-                	node.error(JSON.stringify(err));
-                	callback(err, null)
-                   	return;
-                }
-
-                //Inject additional property
-                if (info.friendlyName !== undefined && info.friendlyName !== null)
-                	info.ipaddress = info.friendlyName.split("-")[0].trim();
-                if (device.host)
-                	info.ipaddress = device.host;
-
-				//We use 2 different ways to obtain serialnum Sonos API
-            	if (info.serialNum !== undefined && info.serialNum !== null)
-            		if (info.serialNum.trim().toUpperCase() == serialNumber.trim().toUpperCase())
-            			foundMatch = true;
-            	if (device.serialNumber !== undefined && device.serialNumber !== null)
-            		if (device.serialNumber.trim().toUpperCase() == serialNumber.trim().toUpperCase())
-            			foundMatch = true;
-
-                if (foundMatch && callback)
-                	callback(null, info);
-
-                if (foundMatch) {
-                	search.destroy();
-                	search = null;
-                }
-            });
-        });
-        search.setMaxListeners(Infinity);
-
-        //In case there is no match
-        setTimeout(function() { 
-            if (!foundMatch && callback)
-                callback(null, null);
-            if (search !== null)
-           		search.destroy();
-        }, 3000);
 	}
 
-    RED.nodes.registerType('better-sonos-control', Node);
+	RED.nodes.registerType('better-sonos-control', Node);
 };
