@@ -46,7 +46,7 @@ module.exports = function(RED) {
 				return;	
 			}
 
-			//inject additional properties
+			//massage albumArtURL property
 			if (trackObj.albumArtURI !== undefined && trackObj.albumArtURI !== null) {
 				var port = 1400;
 				trackObj.albumArtURL = "http://" + ipaddress + ":" + port + trackObj.albumArtURI;
@@ -55,7 +55,6 @@ module.exports = function(RED) {
 			//Output data
 			msg.payload = trackObj.title;
 			msg.track = trackObj;
-			node.send([null, msg]);
 
 			getSonosVolume(node, msg, ipaddress);
 		});
