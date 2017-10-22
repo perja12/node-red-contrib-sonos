@@ -71,7 +71,8 @@
                     callback(null, info);
 
                 if (foundMatch) {
-                    search.destroy();
+                    if (search !== null && search !== undefined)
+                        search.destroy();
                     search = null;
                 }
             });
@@ -82,8 +83,10 @@
         setTimeout(function() { 
             if (!foundMatch && callback)
                 callback(null, null);
-            if (search !== null)
+            if (search !== null && search !== undefined) {
                 search.destroy();
+                search = null;
+            }
         }, 3000);
     }
 }
