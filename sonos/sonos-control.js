@@ -161,13 +161,13 @@ module.exports = function(RED) {
 				var volume_step = parseInt(_volume);
 				if (volume_step > 100 || volume_step <= 0)
 					volume_step = 1;
-				client.getVolume(function (err, currentvol) {
+				client.getVolume(function (err, result) {
 					if (err) {
 						node.error(JSON.stringify(err));
 						node.status({fill:"red", shape:"dot", text:"failed to execute request"});
 						return;
 					}
-				 	var volume_val = parseInt(currentvol) + volume_step;
+				 	var volume_val = parseInt(result) + volume_step;
 				 	volume_val = Math.min(100, volume_val);
 				 	volume_val = Math.max(0, volume_val);
 				 	handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
@@ -177,13 +177,13 @@ module.exports = function(RED) {
 				var volume_step = parseInt(_volume);
 				if (volume_step > 100 || volume_step <= 0)
 					volume_step = 1;
-				client.getVolume(function (err, currentvol) {
+				client.getVolume(function (err, result) {
 					if (err) {
 						node.error(JSON.stringify(err));
 						node.status({fill:"red", shape:"dot", text:"failed to execute request"});
 						return;
 					}
-				 	var volume_val = parseInt(currentvol) - volume_step;
+				 	var volume_val = parseInt(result) - volume_step;
 				 	volume_val = Math.min(100, volume_val);
 				 	volume_val = Math.max(0, volume_val);
 				 	handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
