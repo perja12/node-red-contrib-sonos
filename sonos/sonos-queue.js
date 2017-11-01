@@ -1,14 +1,15 @@
 module.exports = function(RED) {
 	'use strict';
 
+	var SonosHelper = require('./SonosHelper.js');
+	var helper = new SonosHelper();
+
 	function Node(n) {
 	  
 		RED.nodes.createNode(this, n);
 		var node = this;
 		var configNode = RED.nodes.getNode(n.confignode);
 
-		var SonosHelper = require('./SonosHelper.js');
-		var helper = new SonosHelper();
 		var isValid = helper.validateConfigNode(node, configNode);
 		if (!isValid)
 			return;
@@ -50,23 +51,13 @@ module.exports = function(RED) {
 		if (node.position === "next" || payload.position === "next") {
 			node.log("Queueing URI next: " + _songuri);
 			client.queueNext(_songuri, function (err, result) {
-				msg.payload = result;
-				node.send(msg);
-				if (err) {
-					node.log(JSON.stringify(err));
-				}
-				node.log(JSON.stringify(result));
+				helper.handleSonosApiRequest(node, err, result, msg, null, null);
 			});
 		} 
 		else if (node.position === "directplay" || payload.position === "directplay") {
 			node.log("Direct play URI: " + _songuri);
 			client.play(_songuri, function (err, result) {
-				msg.payload = result;
-				node.send(msg);
-				if (err) {
-					node.log(JSON.stringify(err));
-				}
-				node.log(JSON.stringify(result));
+				helper.handleSonosApiRequest(node, err, result, msg, null, null);
 			});
 		} 
 		else {				
@@ -83,12 +74,7 @@ module.exports = function(RED) {
 			// Queue song now
 			node.log("Queuing at " + set_position + " URI: " + _songuri );
 			client.queue(_songuri, set_position, function (err, result) {
-				msg.payload = result;
-				node.send(msg);
-				if (err) {
-					node.log(JSON.stringify(err));
-				}
-				node.log(JSON.stringify(result));
+				helper.handleSonosApiRequest(node, err, result, msg, null, null);
 			});
 		}
 	}

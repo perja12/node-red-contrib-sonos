@@ -1,14 +1,15 @@
 module.exports = function(RED) {
 	'use strict';
 
+	var SonosHelper = require('./SonosHelper.js');
+	var helper = new SonosHelper();
+
 	function Node(n) {
 
 		RED.nodes.createNode(this, n);
 		var node = this;
 		var configNode = RED.nodes.getNode(n.confignode);
 
-		var SonosHelper = require('./SonosHelper.js');
-		var helper = new SonosHelper();
 		var isValid = helper.validateConfigNode(node, configNode);
 		if (!isValid)
 			return;

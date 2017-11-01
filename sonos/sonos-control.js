@@ -1,14 +1,15 @@
 module.exports = function(RED) {
 	'use strict';
 
+	var SonosHelper = require('./SonosHelper.js');
+	var helper = new SonosHelper();
+
 	function Node(n) {
 	  
 		RED.nodes.createNode(this, n);
 		var node = this;
 		var configNode = RED.nodes.getNode(n.confignode);
 
-		var SonosHelper = require('./SonosHelper.js');
-		var helper = new SonosHelper();
 		var isValid = helper.validateConfigNode(node, configNode);
 		if (!isValid)
 			return;
@@ -76,17 +77,17 @@ module.exports = function(RED) {
 		{
 			case "pause":
 				client.pause(function(err, result) {
-					handleSonosApiRequest(node, err, result, msg, "paused", null);
+					helper.handleSonosApiRequest(node, err, result, msg, "paused", null);
 				});
 				break;
 			case "stop":
 				client.stop(function(err, result) {
-					handleSonosApiRequest(node, err, result, msg, "stopped", null);
+					helper.handleSonosApiRequest(node, err, result, msg, "stopped", null);
 				});
 				break;
 			default:
 				client.play(function(err, result) {
-					handleSonosApiRequest(node, err, result, msg, "playing", null);
+					helper.handleSonosApiRequest(node, err, result, msg, "playing", null);
 				});
 				break;
 		}
@@ -144,18 +145,18 @@ module.exports = function(RED) {
 					break;
 				}
 				client.setVolume(String(_volume), function(err, result) {
-					handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
+					helper.handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
 				});
 				break;
 
 			case "mute":
 				client.setMuted(true, function(err, result) {
-					handleSonosApiRequest(node, err, result, msg, "muted", null);
+					helper.handleSonosApiRequest(node, err, result, msg, "muted", null);
 				});
 				break;
 			case "unmute":
 				client.setMuted(false, function(err, result) {
-					handleSonosApiRequest(node, err, result, msg, "unmuted", null);
+					helper.handleSonosApiRequest(node, err, result, msg, "unmuted", null);
 				});
 				break;
 			case "vol_up":
@@ -172,7 +173,7 @@ module.exports = function(RED) {
 				 	volume_val = Math.min(100, volume_val);
 				 	volume_val = Math.max(0, volume_val);
 				 	client.setVolume(volume_val, function (err, result) {
-				 		handleSonosApiRequest(node, err, result, msg, "vol: " + String(volume_val), null);
+				 		helper.handleSonosApiRequest(node, err, result, msg, "vol: " + String(volume_val), null);
 				 	});
 				});
 				break;
@@ -190,7 +191,7 @@ module.exports = function(RED) {
 				 	volume_val = Math.min(100, volume_val);
 				 	volume_val = Math.max(0, volume_val);
 				 	client.setVolume(volume_val, function (err, result) {
-				 		handleSonosApiRequest(node, err, result, msg, "vol: " + String(volume_val), null);
+				 		helper.handleSonosApiRequest(node, err, result, msg, "vol: " + String(volume_val), null);
 				 	});
 				});
 				break;
@@ -205,34 +206,18 @@ module.exports = function(RED) {
 
 		if (_track == "next") {
 			client.next(function(err, result) {
-				handleSonosApiRequest(node, err, result, msg, "next", null);
+				helper.handleSonosApiRequest(node, err, result, msg, "next", null);
 			});
 			return;
 		}
 
 		if (_track == "previous") {
 			client.previous(function(err, result) {
-				handleSonosApiRequest(node, err, result, msg, "previous", null);
+				helper.handleSonosApiRequest(node, err, result, msg, "previous", null);
 			});
 			return;
 		}
 	}
-
-	function handleSonosApiRequest(node, err, result, msg, successString, failureString) {
-		if (err) {
-			node.error(JSON.stringify(err));
-			if (!failureString)
-				failureString = "failed to execute request";
-			node.status({fill:"red", shape:"dot", text:failureString});
-			return;
-		}
-
-		msg.payload = result;
-
-		if (!successString)
-			successString = "request success";
-		node.status({fill:"blue", shape:"dot", text:successString});
-	}
-
+	
 	RED.nodes.registerType('better-sonos-control', Node);
 };
