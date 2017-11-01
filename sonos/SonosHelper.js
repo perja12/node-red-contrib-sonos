@@ -9,8 +9,10 @@
             node.status({fill:"red", shape:"ring", text:"please select a config node"});
             return false;
         }
-        if (configNode.serialnum === undefined || configNode === null) {
-            node.status({fill:"red", shape:"ring", text:"missing serial number in config node"});
+        var hasSerialNum = configNode.serialnum !== undefined && configNode.serialnum !== null && configNode.serialnum.trim().length > 5;
+        var hasIpAddress = configNode.ipaddress !== undefined && configNode.ipaddress !== null && configNode.ipaddress.trim().length > 5;
+        if (!hasSerialNum && !hasIpAddress) {
+            node.status({fill:"red", shape:"ring", text:"missing serial number or IP Address in config node"});
             return false;
         }
 
@@ -25,6 +27,14 @@
         if (!isValid)
             return;
 
+        //use IP Address if user set it
+        var hasIpAddress = configNode.ipaddress !== undefined && configNode.ipaddress !== null && configNode.ipaddress.trim().length > 5;
+        if (hasIpAddress) {
+            if (callback)
+                callback(configNode);
+            return;
+        }
+
         //first find the Sonos IP address from given serial number
         this.findSonos(node, configNode.serialnum, function(err, device) {
             if (err) {
@@ -35,6 +45,8 @@
                 node.status({fill:"red", shape:"dot", text:"device " + configNode.serialnum + " not found"});
                 return; 
             }
+
+            console.log("Found Sonos device " + configNode.serialnum + " at " + device.ipaddress);
 
             if (callback)
                 callback(device);

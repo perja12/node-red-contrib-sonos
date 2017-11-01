@@ -4,6 +4,7 @@ module.exports = function(RED)
         RED.nodes.createNode(this, config);
 
         this.serialnum = config.serialnum;
+        this.ipaddress = config.ipaddress;
     }
 
     //Build API to auto detect IP Addresses
