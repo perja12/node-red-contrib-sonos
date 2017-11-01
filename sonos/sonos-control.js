@@ -139,7 +139,8 @@ module.exports = function(RED) {
 		{
 			case "vol_set":
 				var volume_val = parseInt(_volume);
-				if (volume_val < 0 || volume_val > 100) {
+				if (isNaN(volume_val) || volume_val < 0 || volume_val > 100) {
+					node.status({fill:"red", shape:"dot", text:"invalid value for volume"});
 					break;
 				}
 				client.setVolume(String(_volume), function(err, result) {
@@ -159,8 +160,8 @@ module.exports = function(RED) {
 				break;
 			case "vol_up":
 				var volume_step = parseInt(_volume);
-				if (volume_step > 100 || volume_step <= 0)
-					volume_step = 1;
+				if (isNaN(volume_step) || volume_step > 100 || volume_step <= 0)
+					volume_step = 5;
 				client.getVolume(function (err, result) {
 					if (err) {
 						node.error(JSON.stringify(err));
@@ -170,13 +171,15 @@ module.exports = function(RED) {
 				 	var volume_val = parseInt(result) + volume_step;
 				 	volume_val = Math.min(100, volume_val);
 				 	volume_val = Math.max(0, volume_val);
-				 	handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
+				 	client.setVolume(volume_val, function (err, result) {
+				 		handleSonosApiRequest(node, err, result, msg, "vol: " + String(volume_val), null);
+				 	});
 				});
 				break;
 			case "vol_down":
 				var volume_step = parseInt(_volume);
-				if (volume_step > 100 || volume_step <= 0)
-					volume_step = 1;
+				if (isNaN(volume_step) || volume_step > 100 || volume_step <= 0)
+					volume_step = 5;
 				client.getVolume(function (err, result) {
 					if (err) {
 						node.error(JSON.stringify(err));
@@ -186,7 +189,9 @@ module.exports = function(RED) {
 				 	var volume_val = parseInt(result) - volume_step;
 				 	volume_val = Math.min(100, volume_val);
 				 	volume_val = Math.max(0, volume_val);
-				 	handleSonosApiRequest(node, err, result, msg, "vol: " + String(_volume), null);
+				 	client.setVolume(volume_val, function (err, result) {
+				 		handleSonosApiRequest(node, err, result, msg, "vol: " + String(volume_val), null);
+				 	});
 				});
 				break;
 		}
