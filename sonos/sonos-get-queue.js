@@ -1,8 +1,8 @@
+var SonosHelper = require('./SonosHelper.js');
+var helper = new SonosHelper();
+	
 module.exports = function(RED) {
 	'use strict';
-
-	var SonosHelper = require('./SonosHelper.js');
-	var helper = new SonosHelper();
 
 	function Node(n) {
 
