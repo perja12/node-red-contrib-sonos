@@ -34,16 +34,16 @@ module.exports = function(RED)
         });
         search.setMaxListeners(Infinity);
 
-        //Stop searching after 2 seconds
+        //Stop searching after 5 seconds
         setTimeout(function() { 
             search.destroy();
-        }, 2000);
+        }, 5000);
   
         //Add a bit of delay for all devices to be discovered
         if (discoveryCallback) {
             setTimeout(function() { 
                 discoveryCallback(devices);
-            }, 2000);
+            }, 5000);
         }
     }
 
