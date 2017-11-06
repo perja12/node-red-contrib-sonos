@@ -1,4 +1,6 @@
-﻿class SonosHelper 
+﻿'use strict';
+
+class SonosHelper 
 {
     constructor() {
     }
