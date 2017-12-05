@@ -125,7 +125,7 @@ module.exports = function(RED) {
 			_volume = node.volume_value;
 			 
 		} else if (node.volume === "vol_down") {
-			_volfkt = "vol_up";
+			_volfkt = "vol_down";
 			_volume = node.volume_value;
 			
 		} else if (node.volume === "mute") {
