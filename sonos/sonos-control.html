@@ -98,9 +98,38 @@
 <script type="text/x-red" data-help-name="better-sonos-control">
 	<p>A node to control Sonos device</p>
     <p>
-        This node is currently under development to make it more user-friendly
+        Control command can be sent either via simple input payload, or directly set within the node controls as a standard action.
     </p>
-	<p>This node enables basic controls for a certain SONOS player.</p>
-	<p>Data can be sent either via JSON to the node, or directly set within the node controls as a standard action.</p>
-	<p>Settings within the node will be overwritten by JSON messages in the payload</p>
+
+    <h3>How to use</h3>
+    <p><a href="https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot.png" target="_blank"><img src="https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot.png"></a></p>
+
+    <p>
+        Developed by the super cool folks at <a href="http://originally.us" target="_blank"><strong>Originally US</strong></a>
+    <p/>
+	
+    <h3>Input (optional)</h3>
+    
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd>Accepted values:
+          <br/> • "stop": stop playing
+          <br/> • "pause": pause playing
+          <br/> • "play": resume play
+          <br/> • "playpause": toggle play/pause state
+          <br/> • "mute": mute volume
+          <br/> • "unmute": unmute volume
+          <br/> • number: 0-100: set volume to N%
+          <br/> • "vol_up": increase volume by 5%
+          <br/> • "vol_down": decrease volume by 5%
+          <br/> • "vol+": increase volume by 5%
+          <br/> • "vol-": decrease volume by 5%
+          <br/> • +N: increase volume by N%
+          <br/> • -N: decrease volume by N%
+        </dd>
+
+        <p><a href="https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot_input.png" target="_blank"><img src="https://raw.githubusercontent.com/originallyus/node-red-contrib-better-sonos/master/screenshot_input.png"></a></p>
+    </dl>
 </script>

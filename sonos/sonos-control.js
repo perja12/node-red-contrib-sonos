@@ -44,15 +44,38 @@ module.exports = function(RED) {
 			return;
 		}
 
-		var payload = typeof msg.payload === 'object' ? msg.payload : {};
+		//Convert payload to string
+		var payload = "";
+		if (msg.payload !== null && msg.payload !== undefined) 
+			payload = "" + msg.payload;
 
+		//Convenient payload
+		if (payload === "play" || payload === "pause" || payload === "stop" || payload === "toggle" || payload === "playpause") {
+			payload = {mode: payload};
+		}
+		else if (payload === "next" || payload === "previous") {
+			payload = {track: payload};
+		}
+		else if (payload === "mute" || payload === "unmute" || payload === "vol_up" || payload === "vol_down" || payload === "vol+" || payload === "vol+") {
+			payload = {volume: payload};
+		}
+		else if (payload.startsWith("+") && parseInt(payload) > 0 && parseInt(payload) <= 100) {
+			payload = {volume: "vol_up", volstep: parseInt(payload)};
+		}
+		else if (payload.startsWith("-") && parseInt(payload) < 0 && parseInt(payload) >= -100) {
+			payload = {volume: "vol_down", volstep: -parseInt(payload)};
+		}
+		else if (!isNaN(parseInt(payload)) && parseInt(payload) >= 0 && parseInt(payload) <= 100) {
+			payload = {volume: "vol_set", volume_value: payload};
+		}
+
+		// evaluate play commands
 		if (payload.mode || node.mode)
 			setMode(node, configNode, msg, client, payload);
 
 		// evaluate requested track setting
-		if (payload.track || node.track) {
+		if (payload.track || node.track)
 			setTrack(node, configNode, msg, client, payload);
-		}
 
 		// evaluate volume setting
 		if (payload.volume || node.volume)
@@ -85,6 +108,33 @@ module.exports = function(RED) {
 					helper.handleSonosApiRequest(node, err, result, msg, "stopped", null);
 				});
 				break;
+			case "toggle":
+			case "playpause":
+				//Retrieve current playing state
+				client.getCurrentState(function (err, state) {
+					if (err) {
+						node.error(JSON.stringify(err));
+						node.status({fill:"red", shape:"dot", text:"failed to retrieve current state"});
+						return;
+					}
+					if (state === null || state === undefined) {
+						node.status({fill:"red", shape:"dot", text:"invalid current state retrieved"});
+						return;	
+					}
+
+					//Toggle playing state
+					if (state === "playing") {
+						client.pause(function(err, result) {
+							helper.handleSonosApiRequest(node, err, result, msg, "paused", null);
+						});
+					}
+					else {
+						client.play(function(err, result) {
+							helper.handleSonosApiRequest(node, err, result, msg, "playing", null);
+						});
+					}
+				});
+				break;
 			default:
 				client.play(function(err, result) {
 					helper.handleSonosApiRequest(node, err, result, msg, "playing", null);
@@ -98,11 +148,11 @@ module.exports = function(RED) {
 		var _volfkt;
 		var _volume;
 		if (payload.volume) {
-			if (payload.volume === "vol_up") {
+			if (payload.volume === "vol_up" || payload.volume === "vol+") {
 			 _volfkt = "vol_up";
 			 _volume = payload.volstep;
 			 
-			} else if (payload.volume === "vol_down") {
+			} else if (payload.volume === "vol_down" || payload.volume === "vol-") {
 			 _volfkt = "vol_down";
 			 _volume = payload.volstep;
 			 	
@@ -112,9 +162,9 @@ module.exports = function(RED) {
 			} else if (payload.volume === "unmute") {
 			 _volfkt = "unmute";
 			 	
-			} else {
+			} else if (payload.volume === "vol_set") {
 			 _volfkt = "vol_set";
-			 _volume = payload.volume;
+			 _volume = payload.volume_value;
 			}
 		
 		} else if (node.volume === "volume") {
