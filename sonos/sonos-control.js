@@ -44,10 +44,11 @@ module.exports = function(RED) {
 			return;
 		}
 
-		//Convert payload to string
+		//Convert payload to lowercase string
 		var payload = "";
 		if (msg.payload !== null && msg.payload !== undefined) 
 			payload = "" + msg.payload;
+		payload = payload.toLowerCase();
 
 		//Convenient payload
 		if (payload === "play" || payload === "pause" || payload === "stop" || payload === "toggle" || payload === "playpause") {
