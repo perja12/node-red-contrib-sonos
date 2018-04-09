@@ -77,12 +77,17 @@ module.exports = function(RED) {
 		var _track = payload.track;
 		if (node.track)
 			_track = node.track;
+		var _volume = payload.volume;
+		if (node.volume)
+			_volume = node.volume;
 
 		// simple control commands
 		if (_mode)
 			handleCommand(node, configNode, msg, client, _mode);
 		if (_track)
 			handleCommand(node, configNode, msg, client, _track);
+		if (_volume)
+			handleCommand(node, configNode, msg, client, _volume);
 
 		// commands with parameters
 		if (payload.volume || node.volume)
