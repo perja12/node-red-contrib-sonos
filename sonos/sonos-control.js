@@ -81,14 +81,14 @@ module.exports = function(RED) {
 		// simple control commands
 		if (_mode)
 			handleCommand(node, configNode, msg, client, _mode);
-
-		// control commands with parameters
 		if (_track)
 			handleCommand(node, configNode, msg, client, _track);
 
-		// evaluate volume setting
+		// commands with parameters
 		if (payload.volume || node.volume)
 			handleVolumeCommand(node, configNode, msg, client, payload);
+		if (payload.group || node.group)
+			handleGroupingCommand(node, configNode, msg, client, payload);
 
 		node.send(msg);
 	}
@@ -266,6 +266,11 @@ module.exports = function(RED) {
 				});
 				break;
 		}
+	}
+
+	function handleGroupingCommand(node, configNode, msg, client, payload)
+	{
+
 	}
 	
 	RED.nodes.registerType('better-sonos-control', Node);
