@@ -69,6 +69,12 @@ module.exports = function(RED) {
 		else if (!isNaN(parseInt(payload)) && parseInt(payload) >= 0 && parseInt(payload) <= 100) {
 			payload = {volume: "vol_set", volume_value: payload};
 		}
+		else if (payload === "join" || payload === "join_group" || payload === "joingroup" || payload === "join group") {
+			payload = {command: "join_group", group: "Play 1"};
+		}
+		else if (payload === "leave" || payload === "leave_group" || payload === "leavegroup" || payload === "leave group") {
+			payload = {command: "leave_group"};
+		}
 
 		//Use payload values only if config via dialog is empty
 		var _mode = payload.mode;
@@ -80,6 +86,9 @@ module.exports = function(RED) {
 		var _volume = payload.volume;
 		if (node.volume)
 			_volume = node.volume;
+		var _command = payload.command;
+		if (node.command)
+			_command = node.command;
 
 		// simple control commands
 		if (_mode)
@@ -88,6 +97,8 @@ module.exports = function(RED) {
 			handleCommand(node, configNode, msg, client, _track);
 		if (_volume)
 			handleCommand(node, configNode, msg, client, _volume);
+		if (_command)
+			handleCommand(node, configNode, msg, client, _command);
 
 		// commands with parameters
 		if (payload.volume || node.volume)
@@ -167,6 +178,17 @@ module.exports = function(RED) {
 			case "unmute":
 				client.setMuted(false, function(err, result) {
 					helper.handleSonosApiRequest(node, err, result, msg, "unmuted", null);
+				});
+				break;
+
+			case "join_group":
+				client.joinGroup("Play 1", false, function(err, result) {
+					helper.handleSonosApiRequest(node, err, result, msg, "joined group", null);
+				});
+				break;
+			case "leave_group":
+				client.leaveGroup(function(err, result) {
+					helper.handleSonosApiRequest(node, err, result, msg, "leave group", null);
 				});
 				break;
 		}
