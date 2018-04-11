@@ -69,16 +69,20 @@ module.exports = function(RED) {
 		else if (!isNaN(parseInt(payload)) && parseInt(payload) >= 0 && parseInt(payload) <= 100) {
 			payload = {volume: "vol_set", volume_value: payload};
 		}
-		else if (payload === "join" || payload === "join_group" || payload === "joingroup" || payload === "join group") {
-			payload = {command: "join_group", group: "Play 1"};
-		}
-		else if (payload === "leave" || payload === "leave_group" || payload === "leavegroup" || payload === "leave group") {
-			payload = {command: "leave_group"};
-		}
-		else if (payload === "flush") {
+		else if (payload === "flush" || payload === "clear") {
 			payload = {command: "flush"};
 		}
 
+		//Grouping
+		else if (payload === "join" || payload === "join_group" || payload === "joingroup" || payload === "join group") {
+			payload = "join_group";
+			handleGroupingCommand(node, configNode, msg, client, payload);
+		}
+		else if (payload === "leave" || payload === "leave_group" || payload === "leavegroup" || payload === "leave group") {
+			payload = "leave_group";
+			handleGroupingCommand(node, configNode, msg, client, payload);
+		}
+		
 		//Use payload values only if config via dialog is empty
 		var _mode = payload.mode;
 		if (node.mode)
@@ -106,8 +110,6 @@ module.exports = function(RED) {
 		// commands with parameters
 		if (payload.volume || node.volume)
 			handleVolumeCommand(node, configNode, msg, client, payload);
-		if (payload.group || node.group)
-			handleGroupingCommand(node, configNode, msg, client, payload);
 
 		node.send(msg);
 	}
@@ -187,17 +189,6 @@ module.exports = function(RED) {
 			case "flush":
 				client.flush(function(err, result) {
 					helper.handleSonosApiRequest(node, err, result, msg, "queue cleared", null);
-				});
-				break;
-
-			case "join_group":
-				client.joinGroup("Sonos One", function(err, result) {
-					helper.handleSonosApiRequest(node, err, result, msg, "joined group", null);
-				});
-				break;
-			case "leave_group":
-				client.leaveGroup(function(err, result) {
-					helper.handleSonosApiRequest(node, err, result, msg, "left group", null);
 				});
 				break;
 		}
@@ -306,7 +297,25 @@ module.exports = function(RED) {
 
 	function handleGroupingCommand(node, configNode, msg, client, payload)
 	{
+		if (payload === "leave_group") {
+			client.leaveGroup(function(err, result) {
+				helper.handleSonosApiRequest(node, err, result, msg, "left group", null);
+			});
+		}
 
+		if (payload === "join_group") {
+			//validation
+			var deviceName = msg.topic;
+			if (!deviceName) {
+				node.error(JSON.stringify(err));
+				node.status({fill:"red", shape:"dot", text:"msg.topic is not defined"});
+				return;
+			}
+
+			client.joinGroup(deviceName, function(err, result) {
+				helper.handleSonosApiRequest(node, err, result, msg, "joined group with " + deviceName, null);
+			});
+		}
 	}
 	
 	RED.nodes.registerType('better-sonos-control', Node);
