@@ -75,6 +75,9 @@ module.exports = function(RED) {
 		else if (payload === "leave" || payload === "leave_group" || payload === "leavegroup" || payload === "leave group") {
 			payload = {command: "leave_group"};
 		}
+		else if (payload === "flush") {
+			payload = {command: "flush"};
+		}
 
 		//Use payload values only if config via dialog is empty
 		var _mode = payload.mode;
@@ -181,8 +184,14 @@ module.exports = function(RED) {
 				});
 				break;
 
+			case "flush":
+				client.flush(function(err, result) {
+					helper.handleSonosApiRequest(node, err, result, msg, "queue cleared", null);
+				});
+				break;
+
 			case "join_group":
-				client.joinGroup("Play 1", false, function(err, result) {
+				client.joinGroup("Play 1", true, function(err, result) {
 					helper.handleSonosApiRequest(node, err, result, msg, "joined group", null);
 				});
 				break;
