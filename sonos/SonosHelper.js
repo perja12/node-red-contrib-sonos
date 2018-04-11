@@ -107,7 +107,8 @@ class SonosHelper
     handleSonosApiRequest(node, err, result, msg, successString, failureString)
     {
         if (err) {
-            node.error(JSON.stringify(err));
+            node.error(err);
+            console.log(err);
             if (!failureString)
                 failureString = "failed to execute request";
             node.status({fill:"red", shape:"dot", text:failureString});
