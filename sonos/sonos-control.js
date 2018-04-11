@@ -191,13 +191,13 @@ module.exports = function(RED) {
 				break;
 
 			case "join_group":
-				client.joinGroup("Play 1", true, function(err, result) {
+				client.joinGroup("Sonos One", function(err, result) {
 					helper.handleSonosApiRequest(node, err, result, msg, "joined group", null);
 				});
 				break;
 			case "leave_group":
 				client.leaveGroup(function(err, result) {
-					helper.handleSonosApiRequest(node, err, result, msg, "leave group", null);
+					helper.handleSonosApiRequest(node, err, result, msg, "left group", null);
 				});
 				break;
 		}
