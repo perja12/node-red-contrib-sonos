@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-better-sonos",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "Newer & improved nodes for Sonos devices",
   "main": "index.js",
   "author": "Originally US <hello@originally.us>",
