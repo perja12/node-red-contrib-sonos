@@ -43,7 +43,7 @@
   },
   "homepage": "http://flows.nodered.org/node/node-red-contrib-better-sonos",
   "dependencies": {
-    "jsbn": "^0.0.0",
-    "sonos": "0.22.2"
+    "jsbn": "^1.1.0",
+    "sonos": "^1.9.0"
   }
 }
